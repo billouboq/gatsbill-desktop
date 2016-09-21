@@ -1,17 +1,22 @@
 {
   "name": "Gatsbill",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
-    "start": "electron ./app/ --enable-logging",
-    "dist": "build"
+    "start": "webpack --config config/webpack.dev.config.js && electron ./app/ --enable-logging",
   },
   "author": "Aurélien Boquet",
-  "build": {
-    "appId": "aurelien.boquet.gatsbill",
-    "category": "chat"
+  "main": "background.js",
+  "dependencies": {
+    "socket.io-client": "1.4.8",
+    "vue": "2.0.0-rc.6"
   },
   "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-stage-2": "^6.13.0",
     "electron": "1.4.0",
-    "electron-builder": "6.7.6"
+    "html-webpack-plugin": "^2.22.0",
+    "webpack": "^1.13.2"
   }
 }
