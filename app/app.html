@@ -6,19 +6,7 @@
 </head>
 
 <body>
-
-<div id="chat">
-   <div class="screen">
-      <p>{{name}}</p>
-      <div v-for="msg in messages">
-         {{msg.name}} : {{msg.text}}
-      </div>
-   </div>
-   <div class="text-edit">
-      <input v-model="text" v-on:keyup.enter="submit" type="text">
-   </div>
-</div>
-
-<script src="../dist/bundle.js"></script>
+   <div id="app"></div>
+   <script src="../dist/bundle.js"></script>
 </body>
 </html>
