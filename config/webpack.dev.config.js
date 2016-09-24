@@ -8,6 +8,11 @@ module.exports = {
       path: path.join(__dirname, '../dist'),
       filename: 'bundle.js'
    },
+   resolve: {
+     alias: {
+       vue: 'vue/dist/vue.js'
+     }
+   },
    module: {
       loaders: [
          {
@@ -21,5 +26,6 @@ module.exports = {
          }
       ]
    },
-   plugins: []
+   plugins: [],
+   devtool: '#source-map'
 };

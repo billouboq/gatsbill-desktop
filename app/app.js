@@ -1,14 +1,28 @@
-import Vue from 'vue/dist/vue.js'
-import App from './app.vue'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+import App from './routes/app.vue'
+import Signin from './routes/signin.vue'
+import Signup from './routes/signup.vue'
+
+// init router
+Vue.use(VueRouter);
+
+// config routes
+const router = new VueRouter({
+   base: __dirname,
+   linkActiveClass: 'active-link',
+   routes: [
+     { path: '/', component: App },
+     { path: '/signin', component: Signin },
+     { path: '/signup', component: Signup }
+   ]
+});
 
 // mount a root Vue instance
 new Vue({
-   el: '#app',
-   template: '<app></app>',
-   components: {
-      app: App
-   }
-});
+   router,
+}).$mount('#app');
 
 /*
 
