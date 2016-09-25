@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import App from './routes/app.vue'
 import Signin from './routes/signin.vue'
 import Signup from './routes/signup.vue'
+import textToSound from './services/speech';
 
 // init router
 Vue.use(VueRouter);
