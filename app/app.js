@@ -1,13 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
 
 import App from './routes/app.vue'
 import Signin from './routes/signin.vue'
 import Signup from './routes/signup.vue'
-import textToSound from './services/speech';
 
-// init router
+// init all the things
 Vue.use(VueRouter);
+Vue.use(VueResource);
 
 // config routes
 const router = new VueRouter({
