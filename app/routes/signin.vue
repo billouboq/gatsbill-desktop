@@ -9,7 +9,6 @@
 
 <script>
    import {server} from '../config/config'
-   import FormHelper from '../components/formHelper.vue'
 
    export default {
       data() {
