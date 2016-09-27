@@ -21,6 +21,10 @@ const router = new VueRouter({
    ]
 });
 
+router.beforeEach((route, redirect, next) => {
+  console.log(route);
+})
+
 // mount a root Vue instance
 new Vue({
    router,
