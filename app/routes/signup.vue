@@ -1,6 +1,8 @@
 <template>
    <div class="signup">
       <h1>Signin</h1>
+      <router-link to="/signin">Go to signin</router-link>
+      <router-link to="/">Go to App</router-link>
       <div class="form">
          <input type="text" v-model="username">
          <input type="email" v-model="email">
@@ -12,6 +14,7 @@
 </template>
 
 <script>
+   import {setToken} from '../services/auth'
    import {server} from '../config/config'
 
    export default {
@@ -32,9 +35,10 @@
                   password: this.password,
                   confirmpassword: this.confirmpassword,
                }).then((response) => {
-               // success callback
-               }, (response) => {
-               // error callback
+                  setToken(response.body.token);
+                  this.$router.push('/');
+               }, (err) => {
+                  console.log(err);
                });
             }
          }

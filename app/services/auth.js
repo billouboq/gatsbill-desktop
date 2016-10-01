@@ -1,10 +1,18 @@
 'use strict';
 
+import {tokenKey} from '../config/config';
 import socket from './socket'
 
-module.exports = (route, redirect, next) => {
+module.exports = {auth, setToken, removeToken, getToken}
 
-   const jwt = window.localStorage.getItem('gatsToken');
+function auth(to, from, next) {
+
+   // if no internet connection
+   if (!navigator.onLine) {
+      next('/nointernet');
+   }
+
+   const jwt = getToken();
 
    if (jwt) {
 
@@ -13,18 +21,33 @@ module.exports = (route, redirect, next) => {
 
       // if user is authenticated
       socket.on('authenticated', (token) => {
-         window.localStorage.setItem('gatsToken', token);
+         console.log('authenticated')
          next();
       });
 
       // if user is unauthorized
       socket.on('unauthorized', () => {
-         window.localStorage.removeItem('gatsToken');
-         redirect('/signin');
+         console.log('unauthorized');
+         removeToken(tokenKey);
+         next('/signin');
       });
 
    } else {
-      redirect('/signin');
+      next('/signin');
    }
 
+}
+
+function setToken(token) {
+   if (token) {
+      window.localStorage.setItem(tokenKey, token);
+   }
+}
+
+function removeToken() {
+   window.localStorage.removeItem(tokenKey);
+}
+
+function getToken() {
+   return window.localStorage.getItem(tokenKey);
 }
