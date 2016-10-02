@@ -21,13 +21,11 @@ function auth(to, from, next) {
 
       // if user is authenticated
       socket.on('authenticated', (token) => {
-         console.log('authenticated')
          next();
       });
 
       // if user is unauthorized
       socket.on('unauthorized', () => {
-         console.log('unauthorized');
          removeToken(tokenKey);
          next('/signin');
       });
