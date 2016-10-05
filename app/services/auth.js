@@ -1,14 +1,17 @@
 'use strict';
 
+import {socket} from './socket';
 import {tokenKey} from '../config/config';
-import socket from './socket'
 
 module.exports = {auth, setToken, removeToken, getToken}
 
 function auth(to, from, next) {
 
+   console.log('in auth');
+
    // if no internet connection
    if (!navigator.onLine) {
+      console.log('no internet');
       next('/nointernet');
    }
 
@@ -16,16 +19,19 @@ function auth(to, from, next) {
 
    if (jwt) {
 
+      console.log('in jwt');
       // send the jwt
       socket.emit('authenticate', {token: jwt}) ;
 
       // if user is authenticated
-      socket.on('authenticated', (token) => {
+      socket.once('authenticated', (token) => {
+         console.log('in authenticated');
          next();
       });
 
       // if user is unauthorized
-      socket.on('unauthorized', () => {
+      socket.once('unauthorized', () => {
+         console.log('in unauthorized');
          removeToken(tokenKey);
          next('/signin');
       });
