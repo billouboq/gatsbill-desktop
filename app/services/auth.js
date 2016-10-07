@@ -3,43 +3,45 @@
 import {socket} from './socket';
 import {tokenKey} from '../config/config';
 
+//todo update this shit
+let isAuth = false;
+
 module.exports = {auth, setToken, removeToken, getToken}
 
 function auth(to, from, next) {
 
    console.log('in auth');
 
-   // if no internet connection
-   if (!navigator.onLine) {
-      console.log('no internet');
-      next('/nointernet');
-   }
-
-   const jwt = getToken();
-
-   if (jwt) {
-
-      console.log('in jwt');
-      // send the jwt
-      socket.emit('authenticate', {token: jwt}) ;
-
-      // if user is authenticated
-      socket.once('authenticated', (token) => {
-         console.log('in authenticated');
-         next();
-      });
-
-      // if user is unauthorized
-      socket.once('unauthorized', () => {
-         console.log('in unauthorized');
-         removeToken(tokenKey);
-         next('/signin');
-      });
-
+   if (isAuth) {
+      next();
    } else {
-      next('/signin');
-   }
 
+      const jwt = getToken();
+      if (jwt) {
+
+         console.log('in jwt');
+         // send the jwt
+         socket.emit('authenticate', {token: jwt}) ;
+
+         // if user is authenticated
+         socket.once('authenticated', (token) => {
+            console.log('in authenticated');
+            isAuth = true;
+            next();
+         });
+
+         // if user is unauthorized
+         socket.once('unauthorized', () => {
+            console.log('in unauthorized');
+            isAuth = false;
+            removeToken(tokenKey);
+            next('/signin');
+         });
+
+      } else {
+         next('/signin');
+      }
+   }
 }
 
 function setToken(token) {

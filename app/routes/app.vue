@@ -26,7 +26,6 @@ export default {
       }
    },
    created() {
-      console.log(this);
       this.$socket.on('message', (message) => {
          this.messages.push(message);
       });
@@ -38,7 +37,6 @@ export default {
       },
       addFriend() {
          if (this.username) {
-            console.log('emit');
             this.$socket.emit('addFriend', this.username);
          }
       }
