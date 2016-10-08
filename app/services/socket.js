@@ -3,7 +3,28 @@
 import io from 'socket.io-client';
 import {server} from '../config/config';
 
-const socket = io(server);
+let socket;
+
+module.exports = {socket, authenticate, install};
+
+function authenticate(jwt, success, error) {
+
+   // connect to server
+   const tick = io(server);
+
+   // send the jwt
+   tick.emit('authenticate', {token: jwt}) ;
+
+   // if user is authenticated
+   tick.on('authenticated', (token) => {
+      socket = tick;
+      success(token)
+   });
+
+   // if user is unauthorized
+   tick.on('unauthorized', error);
+
+}
 
 function install (Vue, option) {
 
@@ -13,5 +34,3 @@ function install (Vue, option) {
    })
 
 }
-
-module.exports = { socket, install };

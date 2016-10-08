@@ -2,6 +2,9 @@
    <div class="app">
       <div class="left-side">
          <input type="text" v-model="username" @keyup.enter="addFriend">
+         <div v-for="friend in friendList">
+            {{friend}}
+         </div>
       </div>
       <div class="center-side">
          <h1>Hello App!</h1>
@@ -22,12 +25,17 @@ export default {
    data() {
       return {
          messages: [],
-         username: ''
+         username: '',
+         friendList: []
       }
    },
    created() {
       this.$socket.on('message', (message) => {
          this.messages.push(message);
+      });
+      this.$socket.on('addFriend', (friend) => {
+         this.friendList.push(friend);
+         alert('Utilisateur ajouté');
       });
    },
    methods: {

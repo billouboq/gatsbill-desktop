@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
+import Vuex from 'vuex';
 import socket from './services/socket'
 import {auth} from './services/auth'
 
@@ -12,6 +13,7 @@ import Signup from './routes/signup.vue'
 // init all the things
 Vue.use(VueRouter);
 Vue.use(VueResource);
+Vue.use(Vuex);
 Vue.use(socket.install);
 
 // config routes
