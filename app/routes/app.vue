@@ -3,7 +3,9 @@
       <div class="left-side">
          <input type="text" v-model="username" @keyup.enter="addFriend">
          <div v-for="friend in friendList">
-            {{friend}}
+            {{friend.username}}
+            <div @click="removeFriend(friend.username)">Remove</div>
+            <div @click="acceptFriend(friend.username)">Accept</div>
          </div>
       </div>
       <div class="center-side">
@@ -25,18 +27,42 @@ export default {
    data() {
       return {
          messages: [],
+         friendList: [],
          username: '',
-         friendList: []
       }
    },
    created() {
+
+      this.$socket.emit('getFriends');
+
+      this.$socket.on('getFriends', (response) => {
+         if (response.status === 200) {
+            this.friendList = response.body;
+         }
+      });
+
       this.$socket.on('message', (message) => {
          this.messages.push(message);
       });
-      this.$socket.on('addFriend', (friend) => {
-         this.friendList.push(friend);
-         alert('Utilisateur ajouté');
+
+      this.$socket.on('askFriend', (response) => {
+         if (response.status === 200) {
+            this.friendList.push(response.body);
+         }
       });
+
+      this.$socket.on('removeFriend', (response) => {
+         if (response.status === 200) {
+            this.friendList = this.friendList.filter(friend => friend.username !== response.body);
+         }
+      });
+
+      this.$socket.on('acceptFriend', (response) => {
+         if (response.status === 200) {
+            alert('friend Accepted');
+         }
+      });
+
    },
    methods: {
       sendMessage(message) {
@@ -45,8 +71,14 @@ export default {
       },
       addFriend() {
          if (this.username) {
-            this.$socket.emit('addFriend', this.username);
+            this.$socket.emit('askFriend', this.username);
          }
+      },
+      removeFriend(username) {
+         this.$socket.emit('removeFriend', username);
+      },
+      acceptFriend(username) {
+         this.$socket.emit('acceptFriend', username);
       }
    },
    components: {
