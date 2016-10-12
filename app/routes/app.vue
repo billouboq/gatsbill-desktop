@@ -4,8 +4,8 @@
          <input type="text" v-model="username" @keyup.enter="addFriend">
          <div v-for="friend in friendList">
             {{friend.username}}
-            <div @click="removeFriend(friend.username)">Remove</div>
-            <div @click="acceptFriend(friend.username)">Accept</div>
+            <div @click="removeFriend(friend.userid)">Remove</div>
+            <div @click="acceptFriend(friend.userid)">Accept</div>
          </div>
       </div>
       <div class="center-side">
@@ -53,12 +53,14 @@ export default {
 
       this.$socket.on('removeFriend', (response) => {
          if (response.status === 200) {
-            this.friendList = this.friendList.filter(friend => friend.username !== response.body);
+            console.log(response);
+            this.friendList = this.friendList.filter(friend => friend.userid !== response.body);
          }
       });
 
       this.$socket.on('acceptFriend', (response) => {
          if (response.status === 200) {
+            console.log(response);
             alert('friend Accepted');
          }
       });

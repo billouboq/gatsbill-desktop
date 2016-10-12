@@ -10,7 +10,10 @@ module.exports = {socket, authenticate, install};
 function authenticate(jwt, success, error) {
 
    // connect to server
-   const tick = io(server);
+   const tick = io(server, {
+      forceNew: true,
+      transports: ['websocket']
+   });
 
    // send the jwt
    tick.emit('authenticate', {token: jwt}) ;
