@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import store from '../services/store'
 import {setToken} from '../services/auth'
 import {server} from '../config/config'
 
@@ -35,6 +36,7 @@ export default {
                password: this.password,
                confirmpassword: this.confirmpassword,
             }).then((response) => {
+               store.user = response.body.user;
                setToken(response.body.token);
                this.$router.push('/');
             }, (err) => {

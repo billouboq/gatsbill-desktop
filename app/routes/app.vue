@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import store from '../services/store'
 import {auth} from '../services/auth';
 import keyboard from '../components/keyboard.vue';
 import screen from '../components/screen.vue';
@@ -32,6 +33,8 @@ export default {
       }
    },
    created() {
+
+      console.log(store.user);
 
       this.$socket.emit('getFriends');
 
